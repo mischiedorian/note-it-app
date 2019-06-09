@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Notebook} from '../notes/model/notebook';
 import {FeedbackViewModel} from '../feedback/feedback.component';
+import {Note} from '../notes/model/note';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,12 @@ export class ApiService {
   private BASE_URL = 'http://localhost:8082/api';
   private ALL_NOTEBOOKS_URL = `${this.BASE_URL}/notebooks/all`;
   private SEND_FEEDBACK_URL = `${this.BASE_URL}/feedback`;
-  private SAVE_UPDATE_NOTEBOOK = `${this.BASE_URL}/notebooks`;
-  private DELETE_NOTEBOOK = `${this.BASE_URL}/notebooks/`;
+  private SAVE_UPDATE_NOTEBOOK_URL = `${this.BASE_URL}/notebooks`;
+  private DELETE_NOTEBOOK_URL = `${this.BASE_URL}/notebooks/`;
+  private ALL_NOTES_URL = `${this.BASE_URL}/notes/all`;
+  private NOTE_BY_NOTEBOOK_URL = `${this.BASE_URL}/notes/byNotebook/`;
+  private SAVE_UPDATE_NOTE_URL = `${this.BASE_URL}/notes`;
+  private DELETE_NOTE_URL = `${this.BASE_URL}/notes/`;
 
   constructor(private http: HttpClient) { }
 
@@ -26,10 +31,26 @@ export class ApiService {
   }
 
   postNotebook(notebook: Notebook): Observable<Notebook> {
-    return this.http.post<Notebook>(this.SAVE_UPDATE_NOTEBOOK, notebook);
+    return this.http.post<Notebook>(this.SAVE_UPDATE_NOTEBOOK_URL, notebook);
   }
 
   deleteNoteBook(id: string): Observable<any> {
-    return this.http.delete(`${this.DELETE_NOTEBOOK}${id}`);
+    return this.http.delete(`${this.DELETE_NOTEBOOK_URL}${id}`);
+  }
+
+  getAllNotes(): Observable<Note[]> {
+    return this.http.get<Note[]>(this.ALL_NOTES_URL);
+  }
+
+  getNotesByNotebook(notebookId: string): Observable<Note[]> {
+    return this.http.get<Note[]>(`${this.NOTE_BY_NOTEBOOK_URL}${notebookId}`);
+  }
+
+  postNote(note: Note): Observable<Note> {
+    return this.http.post<Note>(this.SAVE_UPDATE_NOTE_URL, note);
+  }
+
+  deleteNote(noteId: string): Observable<any> {
+    return this.http.delete(`${this.DELETE_NOTE_URL}${noteId}`);
   }
 }

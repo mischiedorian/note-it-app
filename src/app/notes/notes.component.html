@@ -16,6 +16,8 @@
         <i class="fa fa-plus"></i> New notebook
       </button>
       <button type="button"
+              (click)="createNote(selectedNotebook.id)"
+              [disabled]="!selectedNotebook"
               class="btn btn-warning pull-right"
               style="margin-left:12px;">
         <i class="fa fa-plus"></i> New note
@@ -28,13 +30,20 @@
     <!-- Notebooks Menu-->
     <div class="col-md-3">
       <br>
+      <!-- Notebook List -->
       <div class="list-group list-group-flush">
-        <a class="list-group-item list-group-item-action">
+        <a (click)="selectAllNotes()"
+           class="list-group-item list-group-item-action">
           <i class="fa fa-book"></i> &nbsp;All
         </a>
-        <a *ngFor="let notebook of notebooks" class="list-group-item list-group-item-action">
-          <i class="fa fa-book"></i> &nbsp;
-          <input [(ngModel)]="notebook.name" type="text" class="input-label" style="width: 80%;"
+        <a *ngFor="let notebook of notebooks"
+           (click)="selectNotebook(notebook)"
+           class="list-group-item list-group-item-action">
+          <i class="fa fa-book"></i>&nbsp;
+          <input [(ngModel)]="notebook.name"
+                 type="text"
+                 class="input-label"
+                 style="width: 80%;"
                  (change)="updateNotebook(notebook)">
           <a class="pull-right text-danger"
              (click)="deleteNotebook(notebook)">
@@ -42,19 +51,46 @@
           </a>
         </a>
       </div>
-      <!-- Notebook List -->
     </div>
-  </div>
 
-  <!-- Notes Panel -->
-  <div class="col-md-9">
-    <div class="row">
-      <div class="col-md-12">
-        <!-- Message iof there are no notes -->
+    <!-- Notes Panel -->
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Message if there are no notes -->
+          <h3 *ngIf="selectedNotebook">{{selectedNotebook.name}}</h3>
+          <h3 *ngIf="!selectedNotebook">All notes</h3>
+          <p *ngIf="this.notes.length === 0">There are no notes to display in this notebook :(</p>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <!-- Notes List -->
+      <div class="row">
+        <!-- Notes List -->
+        <div *ngFor="let note of notes"
+             class="card bg-warning" style="border: 4px solid white;">
+          <div class="card-body" style="padding: 8px; margin-top: 8px;">
+            <div>
+              <!-- Title -->
+              <input type="text"
+                     [(ngModel)]="note.title"
+                     class="input-label-lg"
+                     maxlength="18"
+                     style="width: 80%"
+                     (change)="updateNote(note)">
+              <a class="pull-right text-danger"
+                 (click)="deleteNote(note)">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+            <!-- text -->
+            <textarea class="input-label"
+                      style="width: 100%" rows="6"
+                      [(ngModel)]="note.text"
+                      (change)="updateNote(note)"></textarea>
+            <strong class="text-info" style="font-size: small;">
+              <!-- Will add date when we learn about pipes --></strong>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
