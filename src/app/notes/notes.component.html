@@ -5,6 +5,7 @@
       <input type="text"
              class="form-control"
              style="width: 100%"
+             [(ngModel)]="searchText"
              placeholder="Search notes..."
       >
     </div>
@@ -65,7 +66,7 @@
       </div>
       <div class="row">
         <!-- Notes List -->
-        <app-note *ngFor="let n of notes" [note]="n"
+        <app-note *ngFor="let n of notes | noteTextFilter:searchText" [note]="n"
                   (noteUpdated)="updateNote($event)"
                   (noteDeleted)="deleteNote($event)"
         ></app-note>
