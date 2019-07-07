@@ -65,31 +65,10 @@
       </div>
       <div class="row">
         <!-- Notes List -->
-        <div *ngFor="let note of notes"
-             class="card bg-warning" style="border: 4px solid white;">
-          <div class="card-body" style="padding: 8px; margin-top: 8px;">
-            <div>
-              <!-- Title -->
-              <input type="text"
-                     [(ngModel)]="note.title"
-                     class="input-label-lg"
-                     maxlength="18"
-                     style="width: 80%"
-                     (change)="updateNote(note)">
-              <a class="pull-right text-danger"
-                 (click)="deleteNote(note)">
-                <i class="fa fa-trash-o"></i>
-              </a>
-            </div>
-            <!-- text -->
-            <textarea class="input-label"
-                      style="width: 100%" rows="6"
-                      [(ngModel)]="note.text"
-                      (change)="updateNote(note)"></textarea>
-            <strong class="text-info" style="font-size: small;">
-              <!-- Will add date when we learn about pipes --></strong>
-          </div>
-        </div>
+        <app-note *ngFor="let n of notes" [note]="n"
+                  (noteUpdated)="updateNote($event)"
+                  (noteDeleted)="deleteNote($event)"
+        ></app-note>
       </div>
     </div>
   </div>
